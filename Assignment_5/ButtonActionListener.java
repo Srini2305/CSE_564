@@ -1,23 +1,27 @@
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 public class ButtonActionListener {
 
     private static final String INFO_TITLE = "Information";
 
-    public static void openButtonActionPerformed() {
-        SolutionGUI.openButton.addActionListener(e -> onOpen());
+    public static void openActionPerformed() {
+        SolutionGUI.openMenuItem.addActionListener(e -> onOpen());
     }
 
-    public static void runButtonActionPerformed() {
-        SolutionGUI.runButton.addActionListener(e -> {
-            if(SolutionGUI.runButton.getText().equals("Run"))
-                onRun();
-            else {
-                SolutionGUI.thread.stop();
-                SolutionGUI.runButton.setText("Run");
-            }
-        });
+    public static void runActionPerformed() {
+        SolutionGUI.runMenuItem.addActionListener(e -> { onRun(); });
+    }
+
+    public static void stopActionPerformed() {
+        SolutionGUI.stopMenuItem.addActionListener(e -> { SolutionGUI.thread.stop(); });
+    }
+    public static void aboutActionPerformed() {
+        SolutionGUI.aboutMenu.addActionListener(e -> JOptionPane.showMessageDialog(null,
+                "Ashwin Srinivasan\n Chandan Yadav\n Srinivasan Sundar",
+                INFO_TITLE, JOptionPane.INFORMATION_MESSAGE));
     }
 
     private static void onOpen() {
@@ -41,7 +45,6 @@ public class ButtonActionListener {
             JOptionPane.showMessageDialog(null, "Open a file before running the solution.",
                     INFO_TITLE, JOptionPane.INFORMATION_MESSAGE);
         } else if(validStartingPoint()){
-            SolutionGUI.runButton.setText("Stop");
             int start = Integer.parseInt(SolutionGUI.startingPoint.getText());
             if(start!=SolutionGUI.start || !SolutionGUI.computed){
                 int[] route = TSPSolution.runTSP(DataExtractor.points, start);
@@ -86,7 +89,6 @@ public class ButtonActionListener {
             }
             SolutionGUI.limit++;
         }
-        SolutionGUI.runButton.setText("Run");
         SolutionGUI.limit = 2;
     }
 
