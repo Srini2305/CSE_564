@@ -1,0 +1,155 @@
+Week 2:
+Lecture 2:
+Stepwise Refinement(1971) - Wirth
+  * Top-down design technique
+  * Decompose the idea into main function and other small function. Make connection between the functions(Function call)
+  * Decomposition - Sucessive refinement
+  * Refinement - break down tasks into subtasks. Implies design decision based on set of design criteria.
+  * Along with Design criteria, others like efficiency, storage, clarity, quality(regularity of structures) are taken into considerations
+  * Maintainability and extensibility(portability) are measured in terms of the degree to which program is neatly structured.
+  * Programming = Coding + Design(breaking down of functions and connection between them)
+  
+  * Functional Programming - program is a list of function. Function is a list of elements. Mainly mathematical functions. Ex - Lisp
+  * Function-driven development --> process of developing a software with functions as building blocks.
+      - Functions - receives parameters and returns something. It has set of instructions in its body. It is not inside a class.
+      - Method - Function inside a class is method. Ex - Java
+      - Procedure - Function that does not return anything. Ex - Pascal
+      - Predicate - Function that return boolean(true or false)
+  * Thought process - Sequence, Selection, Iteration
+  * Unit of Modularity - Statements
+  
+
+GPU Programming:
+  * Used for video, image, audio signal processing, CV, NN, Deeplearning, Cryptography
+  * Ex - CUDA for NVIDIA, OpenCL for all GPU
+  * It does not require Classes and Objects (memory intensive --> performance is low) --> (reason why embedded systems doesn't use Objects or classes)
+  * Has more ALU units than Cache and controls(memory) for more computing power.
+  * A program is sent from CPU to GPU(where subtasks are executed parallely), from GPU to CPU it combines again to 1 thread. It is done for many times.
+  * __global__ --> qualifier in standard C that alerts the complier that the function should run in GPU instead of CPU.
+      - Thread -> One execution Unit
+      - Block -> Group of threads
+      - Grid(ALU in GPU) -> Group of blocks
+      - Memory -> Several grids share the memory
+
+
+Lecture 3: Parnas 1972
+Concepts:
+  * Module is a resposibility assignment rather than a subproblem.
+  * Module specification - its inputs, its outputs its interfaces
+  * Small - to thoroughly understand
+  * Independent developement modules (low coupling)
+  * Comprehensibility - they makes easy to understand parts, connections, and the whole.
+Parnes Paper for Modularization:
+  * Modularization = design decision/ independent modules
+  * Modularization improves comprehensibility and flexibility
+  * Information Hiding - Input Format, Data Storage, etc.
+  * Data Structure, its internal linking, accessign procedures, modifyling procedure are part of single module.
+  * Sequence of operation to call a routine and the routine itself is part of same module.
+  * Begins with list of difficult design decision and design decisions that may change later. Each module is designed to hide those decisions from other modules.
+  * Diff b/w function and modules?
+  * Diff b/w tasks and responsibilty?
+  
+
+Quiz 1:
+
+
+Week 3:
+Lectuer 4: Assignment 1
+Lecture 5: Programming in large
+Programming: 1975 DeRemer
+    -> Connectivity (Software Architecture) --> Large
+    -> Process (Software Engineering) --> Small
+   
+Programming in Large:
+    * High Cohesion - inside modules we have things that are highly related
+    * Low Coupling - less connections between modules(classes). Less connections --> easier to replace with another module
+    * Programming Vs Structuring
+    * Develop - Many small programs(modules) written by diff ppl
+    * Architecture - Structuring large collection of modules to form a "System"
+    * Care for the trees (programmer) without lose sight of the forest (architect)
+    * Change becomes difficult if operates across module boundaries
+    * Programming in large involves setting up modules that will not need altering in the event of probable changes
+    
+    - Top-down - Decomposition
+    - Botton-Up - Composition
+    - One level/layer at a time
+    - Linking; Horizontal linking
+    - Accessibility - private; public (Information Hiding)
+    - Hierarchy
+    
+1989 Beck
+    - OO thinking --> think of problems in Object-oriented way
+    - class name, responsibilities(for class/module) and collaborators
+    - Design - In Abstract level having processes, data flows and data stores. Independent of implementation
+
+UML Diagram:
+* Procedure, Function method - Activity Diagram
+* Module, Unit - Class Diagram
+* System - Collection of classes
+* Class - Template
+* Object - Instance
+* Task - Methods
+* Responsibility - Class
+* Collaboration - Connection between classes
+* Encapsulation / Accessibility
+* Hierarchy
+* Decomposition / Composition
+* Levels
+* Linking
+
+Quiz 2:
+
+Week 4:
+Lecture 6:
+Function -> Task -> Step
+Class -> Responsibility
+LOC - 25 to 100
+
+
+Lecture 7: Assignment 2
+
+Week 5:
+Lecture 8: Observer Pattern
+Design Pattern - Solutions to software design problems that we find in real world appln development
+* Reusable designs and interactions between objects
+* Creational, Behavioral, Structural
+
+Week 9:
+Lecture 14:
+1993 Gamma et al.
+    -> GoF Patterns
+1994 Garlen
+    -> Architecture
+    - Complexity of software is not based on code(developers), it depends on big picture -> architecture
+    - Related to design
+1997 Johnson et al.
+    -> Components - A system with subsystems(component)
+        - Collection of classes or packages(folder with collection of classes) 
+        - software package, web service, web resources or module
+        - represent code reuse
+        * Relationship
+            - Sequence - Instructions
+            - calls and parameter - functions
+            - Association, Aggregation, Composition, Inheritance, et al.
+            - Relationship between components can be anything. It'll be general interface. Some Ex are - 
+                * Protocols for communication
+                * physical distribution, etc
+        * Design
+    -> Frameworks
+        - related to code and design
+        - reusable design represented by a set of components and the way they interact
+        - Framework implement an architecture
+        - Framework = Components + Design + Domain specific solution
+    -> Patterns
+
+Framework Vs Control
+* Inversion of Control - framework determines the flow of control, i.e., reuse of main
+    - Application has the control and just calls the functions of the library. Library does not have control.
+    - In framework, control(main method) is in framework and it calls the application method. Framework has the control not the application
+        Ex = AWT Swing
+- MVC --> Architectural Pattern
+
+
+
+
+
