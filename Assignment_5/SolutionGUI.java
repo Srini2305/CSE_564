@@ -7,6 +7,7 @@ public class SolutionGUI extends JFrame {
     static JMenuItem openMenuItem = new JMenuItem("Open");
     static JMenuItem stopMenuItem = new JMenuItem("Stop");
     static JMenuItem aboutMenuItem = new JMenuItem("About Team");
+    static JMenuItem saveMenuItem = new JMenuItem("Save");
     static JTextField startingPoint = new JTextField("1");
     static PlottingArea drawingPanel= new PlottingArea();
     static JLabel distance = new JLabel();
@@ -49,7 +50,6 @@ public class SolutionGUI extends JFrame {
         JMenu fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
         fileMenu.add(openMenuItem);
-        JMenuItem saveMenuItem = new JMenuItem("Save");
         fileMenu.add(saveMenuItem);
         JMenu ProjectMenu = new JMenu("Project");
         menuBar.add(ProjectMenu);
@@ -66,6 +66,7 @@ public class SolutionGUI extends JFrame {
     private void addButtonActionListener() {
         ButtonActionListener.openActionPerformed();
         ButtonActionListener.runActionPerformed();
+        ButtonActionListener.saveActionPerformed();
         ButtonActionListener.stopActionPerformed();
         ButtonActionListener.aboutActionPerformed();
     }

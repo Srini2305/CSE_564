@@ -1,7 +1,8 @@
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.*;
 
 public class ButtonActionListener {
 
@@ -17,6 +18,9 @@ public class ButtonActionListener {
 
     public static void stopActionPerformed() {
         SolutionGUI.stopMenuItem.addActionListener(e -> { SolutionGUI.thread.stop(); });
+    }
+    public static void saveActionPerformed(){
+        SolutionGUI.saveMenuItem.addActionListener(e -> onSave());
     }
     public static void aboutActionPerformed() {
         SolutionGUI.aboutMenuItem.addActionListener(e -> JOptionPane.showMessageDialog(null,
@@ -55,6 +59,29 @@ public class ButtonActionListener {
             }
             SolutionGUI.thread = new Thread(ButtonActionListener::drawLines);
             SolutionGUI.thread.start();
+        }
+    }
+
+    private static void onSave(){
+        JFileChooser fs = new JFileChooser();
+        fs.setDialogTitle("Save a File");
+        int result = fs.showSaveDialog(null);
+        if(result == JFileChooser.APPROVE_OPTION){
+            try {
+                File fi = fs.getSelectedFile();
+                FileOutputStream newFile = new FileOutputStream(fi.getPath());
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(newFile));
+                int number = 1;
+                for(int i = 0;i<DataExtractor.points.length;i++){
+                    bufferedWriter.write(number + " " + DataExtractor.normalizedPoints[i][0]+ " "+
+                            DataExtractor.normalizedPoints[i][1]);
+                    number++;
+                    bufferedWriter.newLine();
+                }
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
