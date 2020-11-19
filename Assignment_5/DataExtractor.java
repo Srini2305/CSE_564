@@ -5,19 +5,12 @@ import java.util.Observable;
 import java.util.Scanner;
 
 public class DataExtractor extends Observable {
+    
+    private int[][] points;
+    private int[][] normalizedPoints;
+    private int fileLength = 0;
 
-    private static DataExtractor dataExtractor;
-    static int[][] points;
-    static int[][] normalizedPoints;
-    private static int fileLength = 0;
-
-    private static DataExtractor getInstance(){
-        if(dataExtractor == null){
-            dataExtractor = new DataExtractor();
-        }
-        return dataExtractor;
-    }
-    public static String readFile(String fileName){
+    public String readFile(String fileName){
         File file = new File(fileName);
         StringBuilder stringBuilder = new StringBuilder();
         try (Scanner scanner = new Scanner(file)) {
@@ -37,7 +30,7 @@ public class DataExtractor extends Observable {
         return stringBuilder.toString();
     }
 
-    public static void extractPoints(String content){
+    public void extractPoints(String content){
         int[][] points = new int[getFileLength()][2];
         String[] str = content.trim().split("\\s+");
         for (int i=0, pos=0; i<str.length; i++, pos++){
@@ -50,18 +43,18 @@ public class DataExtractor extends Observable {
             else
                 return o2[0]-o1[0];
         });
-        DataExtractor.points = points;
+        this.points = points;
     }
 
-    public static void normalizePoints() {
-        if(DataExtractor.points==null)
+    public void normalizePoints() {
+        if(points==null)
             return;
         int minX = Integer.MAX_VALUE;
         int minY = Integer.MAX_VALUE;
         int maxX = Integer.MIN_VALUE;
         int maxY = Integer.MIN_VALUE;
-        int[][] pts = new int[DataExtractor.points.length][2];
-        for(int[] pt:DataExtractor.points){
+        int[][] pts = new int[points.length][2];
+        for(int[] pt:points){
             if(pt[0]<minX)
                 minX = pt[0];
             if(pt[1]<minY)
@@ -74,19 +67,37 @@ public class DataExtractor extends Observable {
         int rangeX = (maxX-minX);
         int rangeY = (maxY-minY);
         for(int i=0;i<pts.length;i++){
-            pts[i][0] = DataExtractor.points[i][0] - (minX - 50);
+            pts[i][0] = points[i][0] - (minX - 50);
             pts[i][0] = (pts[i][0]*1250)/rangeX;
-            pts[i][1] = DataExtractor.points[i][1] - (minY - 50);
+            pts[i][1] = points[i][1] - (minY - 50);
             pts[i][1] = (pts[i][1]*750)/rangeY;
         }
-        DataExtractor.normalizedPoints = pts;
+        normalizedPoints = pts;
+        setChanged();
+        notifyObservers();
     }
 
-    public static int getFileLength() {
+    public int[][] getPoints() {
+        return points;
+    }
+
+    public void setPoints(int[][] points) {
+        this.points = points;
+    }
+
+    public int[][] getNormalizedPoints() {
+        return normalizedPoints;
+    }
+
+    public void setNormalizedPoints(int[][] normalizedPoints) {
+        this.normalizedPoints = normalizedPoints;
+    }
+
+    public int getFileLength() {
         return fileLength;
     }
 
-    public static void setFileLength(int fileLength) {
-        DataExtractor.fileLength = fileLength;
+    public void setFileLength(int fileLength) {
+        this.fileLength = fileLength;
     }
 }

@@ -3,6 +3,7 @@ import java.awt.*;
 
 public class SolutionGUI extends JFrame {
 
+    private ButtonActionListener buttonActionListener = new ButtonActionListener();
     static JMenuItem runMenuItem = new JMenuItem("Run");
     static JMenuItem openMenuItem = new JMenuItem("Open");
     static JMenuItem stopMenuItem = new JMenuItem("Stop");
@@ -46,12 +47,12 @@ public class SolutionGUI extends JFrame {
     }
 
     private void addButtonActionListener() {
-        ButtonActionListener.openActionPerformed();
-        ButtonActionListener.runActionPerformed();
-        ButtonActionListener.newActionPerformed();
-        ButtonActionListener.saveActionPerformed();
-        ButtonActionListener.stopActionPerformed();
-        ButtonActionListener.aboutActionPerformed();
+        buttonActionListener.openActionPerformed();
+        buttonActionListener.runActionPerformed();
+        buttonActionListener.newActionPerformed();
+        buttonActionListener.saveActionPerformed();
+        buttonActionListener.stopActionPerformed();
+        buttonActionListener.aboutActionPerformed();
     }
 
 }

@@ -46,12 +46,36 @@ public class PlottingArea extends JPanel implements Observer {
 
     public void setPoints(int[][] points) {
         this.points = points;
-        repaint();
+        //repaint();
     }
 
     public void setLimit(int limit) {
         this.limit = limit;
         repaint();
+    }
+
+    public Collection<Integer> getSyncRoute1() {
+        return syncRoute1;
+    }
+
+    public void setSyncRoute1(Collection<Integer> syncRoute1) {
+        this.syncRoute1 = syncRoute1;
+    }
+
+    public Collection<Integer> getSyncRoute2() {
+        return syncRoute2;
+    }
+
+    public void setSyncRoute2(Collection<Integer> syncRoute2) {
+        this.syncRoute2 = syncRoute2;
+    }
+
+    public Collection<Integer> getSyncRoute3() {
+        return syncRoute3;
+    }
+
+    public void setSyncRoute3(Collection<Integer> syncRoute3) {
+        this.syncRoute3 = syncRoute3;
     }
 
     @Override

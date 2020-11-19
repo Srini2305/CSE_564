@@ -23,12 +23,12 @@ public class TSPSolution {
         return new int[]{neighbor, cost};
     }
 
-    public static void attachThread(int n){
+    public static void attachThread(int n, int[][] points){
         for(int i=0;i<n;i++){
-            int s = 1+(i*(DataExtractor.points.length/n));
+            int s = 1+(i*(points.length/n));
             List<Integer> route = new ArrayList<>();
             List<Integer> cost = new ArrayList<>();
-            Thread thread = new Thread(() -> runTSP(s, route, cost));
+            Thread thread = new Thread(() -> runTSP(points, s, route, cost));
             threadList.add(thread);
             routeList.add(route);
             costList.add(cost);
@@ -36,24 +36,23 @@ public class TSPSolution {
         }
     }
 
-    public static void runTSP(int start, List<Integer> syncRoute, List<Integer> cost1) {
-        int[][] points = DataExtractor.points;
+    public static void runTSP(int[][] points, int start, List<Integer> routeList, List<Integer> cost) {
         int len = points.length;
         int[] route = new int[len+1];
         boolean[] visited = new boolean[len];
-        cost1.add(0);
+        cost.add(0);
         route[0] = start;
-        syncRoute.add(start);
+        routeList.add(start);
         visited[start-1] = true;
         for(int i=1;i<len;i++){
             int[] neighbor = nearestNeighbor(points, route[i-1]-1, visited);
             route[i] = neighbor[0] + 1;
-            syncRoute.add(neighbor[0]+1);
-            cost1.add(cost1.get(i-1)+ neighbor[1]);
+            routeList.add(neighbor[0]+1);
+            cost.add(cost.get(i-1)+ neighbor[1]);
         }
         route[len] = start;
-        syncRoute.add(start);
-        cost1.add(cost1.get(len-1)+ euclideanDistance(points[start-1][0],points[start-1][1],
+        routeList.add(start);
+        cost.add(cost.get(len-1)+ euclideanDistance(points[start-1][0],points[start-1][1],
                 points[route[len-1]][0],points[route[len-1]][1]));
     }
 
