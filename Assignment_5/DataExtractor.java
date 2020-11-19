@@ -1,14 +1,22 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
+import java.util.Observable;
 import java.util.Scanner;
 
-public class DataExtractor {
-    
+public class DataExtractor extends Observable {
+
+    private static DataExtractor dataExtractor;
     static int[][] points;
     static int[][] normalizedPoints;
     private static int fileLength = 0;
 
+    private static DataExtractor getInstance(){
+        if(dataExtractor == null){
+            dataExtractor = new DataExtractor();
+        }
+        return dataExtractor;
+    }
     public static String readFile(String fileName){
         File file = new File(fileName);
         StringBuilder stringBuilder = new StringBuilder();

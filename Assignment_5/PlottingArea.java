@@ -1,10 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
-public class PlottingArea extends JPanel {
+public class PlottingArea extends JPanel implements Observer {
 
     private int[][] points;
     //Collection<Integer> route = Collections.synchronizedCollection(new ArrayList<>());
@@ -51,4 +49,8 @@ public class PlottingArea extends JPanel {
         repaint();
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        repaint();
+    }
 }
