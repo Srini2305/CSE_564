@@ -1,5 +1,6 @@
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -10,6 +11,10 @@ public class ButtonActionListener {
 
     public static void openActionPerformed() {
         SolutionGUI.openMenuItem.addActionListener(e -> onOpen());
+    }
+
+    public static void newActionPerformed() {
+        SolutionGUI.newMenuItem.addActionListener(e -> onNew());
     }
 
     public static void runActionPerformed() {
@@ -83,6 +88,11 @@ public class ButtonActionListener {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void onNew(){
+        SolutionGUI.drawingPanel.setLimit(2);
+        SolutionGUI.drawingPanel.setPoints(null);
     }
 
     public static boolean validStartingPoint(){
