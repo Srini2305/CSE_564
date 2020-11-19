@@ -1,11 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
-public class PlottingArea extends JPanel {
+public class PlottingArea extends JPanel implements Observer {
 
     private int[][] points;
     Collection<Integer> syncRoute1 = Collections.synchronizedCollection(new ArrayList<>());
@@ -28,9 +25,11 @@ public class PlottingArea extends JPanel {
                 g.fillOval(point[0], point[1], 2, 2);
             }
         }
+        if(points != null && limit<=points.length){
+            drawRoute(syncRoute3, g, Color.GREEN);
+            drawRoute(syncRoute2, g, Color.BLUE);
+        }
         drawRoute(syncRoute1, g, Color.RED);
-        drawRoute(syncRoute2, g, Color.BLUE);
-        drawRoute(syncRoute3, g, Color.GREEN);
     }
 
     private void drawRoute(Collection<Integer> syncRoute, Graphics g, Color c) {
@@ -55,4 +54,8 @@ public class PlottingArea extends JPanel {
         repaint();
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        repaint();
+    }
 }

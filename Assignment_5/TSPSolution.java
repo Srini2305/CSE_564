@@ -61,11 +61,11 @@ public class TSPSolution {
         int firstMin = Integer.MIN_VALUE;
         int min = Integer.MAX_VALUE;
         int minIndex = 0;
-        int[] res = new int[3];
+        int[] res = new int[] {0,1,2};
         for(int k=0;k<3;k++) {
             for (int i = 0; i < costList.size(); i++) {
-                if (costList.get(i).get(n) > firstMin && costList.get(i).get(n) < min) {
-                    min = costList.get(i).get(n);
+                if (costList.get(i).get(n-1) > firstMin && costList.get(i).get(n-1) < min) {
+                    min = costList.get(i).get(n-1);
                     minIndex = i;
                 }
             }

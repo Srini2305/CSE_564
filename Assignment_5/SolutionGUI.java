@@ -7,6 +7,8 @@ public class SolutionGUI extends JFrame {
     static JMenuItem openMenuItem = new JMenuItem("Open");
     static JMenuItem stopMenuItem = new JMenuItem("Stop");
     static JMenuItem aboutMenuItem = new JMenuItem("About Team");
+    static JMenuItem saveMenuItem = new JMenuItem("Save");
+    static JMenuItem newMenuItem = new JMenuItem("New");
     static PlottingArea drawingPanel= new PlottingArea();
     static String fileName;
     static Thread thread;
@@ -31,12 +33,10 @@ public class SolutionGUI extends JFrame {
         JMenu fileMenu = new JMenu("File");
         menuBar.add(fileMenu);
         fileMenu.add(openMenuItem);
-        JMenuItem saveMenuItem = new JMenuItem("Save");
         fileMenu.add(saveMenuItem);
         JMenu ProjectMenu = new JMenu("Project");
         menuBar.add(ProjectMenu);
-        JMenuItem clearMenuItem = new JMenuItem("Clear");
-        ProjectMenu.add(clearMenuItem);
+        ProjectMenu.add(newMenuItem);
         ProjectMenu.add(runMenuItem);
         ProjectMenu.add(stopMenuItem);
         JMenu aboutMenu = new JMenu("About");
@@ -48,6 +48,8 @@ public class SolutionGUI extends JFrame {
     private void addButtonActionListener() {
         ButtonActionListener.openActionPerformed();
         ButtonActionListener.runActionPerformed();
+        ButtonActionListener.newActionPerformed();
+        ButtonActionListener.saveActionPerformed();
         ButtonActionListener.stopActionPerformed();
         ButtonActionListener.aboutActionPerformed();
     }

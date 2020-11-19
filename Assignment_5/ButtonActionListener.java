@@ -1,7 +1,5 @@
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
+import java.io.*;
 
 public class ButtonActionListener {
 
@@ -11,13 +9,25 @@ public class ButtonActionListener {
         SolutionGUI.openMenuItem.addActionListener(e -> onOpen());
     }
 
+    public static void newActionPerformed() {
+        SolutionGUI.newMenuItem.addActionListener(e -> onNew());
+    }
+
     public static void runActionPerformed() {
         SolutionGUI.runMenuItem.addActionListener(e -> { onRun(); });
     }
 
     public static void stopActionPerformed() {
-        SolutionGUI.stopMenuItem.addActionListener(e -> { SolutionGUI.thread.stop(); });
+        SolutionGUI.stopMenuItem.addActionListener(e -> {
+            if(SolutionGUI.thread!=null)
+                SolutionGUI.thread.stop();
+        });
     }
+
+    public static void saveActionPerformed(){
+        SolutionGUI.saveMenuItem.addActionListener(e -> onSave());
+    }
+
     public static void aboutActionPerformed() {
         SolutionGUI.aboutMenuItem.addActionListener(e -> JOptionPane.showMessageDialog(null,
                 "Ashwin Srinivasan\nChandan Yadav\nSrinivasan Sundar",
@@ -55,6 +65,34 @@ public class ButtonActionListener {
         }
     }
 
+    private static void onSave(){
+        JFileChooser fs = new JFileChooser();
+        fs.setDialogTitle("Save a File");
+        int result = fs.showSaveDialog(null);
+        if(result == JFileChooser.APPROVE_OPTION){
+            try {
+                File fi = fs.getSelectedFile();
+                FileOutputStream newFile = new FileOutputStream(fi.getPath());
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(newFile));
+                int number = 1;
+                for(int i = 0;i<DataExtractor.points.length;i++){
+                    bufferedWriter.write(number + " " + DataExtractor.normalizedPoints[i][0]+ " "+
+                            DataExtractor.normalizedPoints[i][1]);
+                    number++;
+                    bufferedWriter.newLine();
+                }
+                bufferedWriter.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void onNew(){
+        SolutionGUI.drawingPanel.setLimit(1);
+        SolutionGUI.drawingPanel.setPoints(null);
+    }
+
     public static void drawLines() {
         while(SolutionGUI.limit<=DataExtractor.points.length+1) {
             SolutionGUI.drawingPanel.setLimit(SolutionGUI.limit);
@@ -70,7 +108,7 @@ public class ButtonActionListener {
             }
             SolutionGUI.limit++;
         }
-        SolutionGUI.limit = 2;
+        SolutionGUI.limit = 1;
     }
 
 }
