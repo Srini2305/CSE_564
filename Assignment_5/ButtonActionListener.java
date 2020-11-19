@@ -34,7 +34,6 @@ public class ButtonActionListener {
         String content = DataExtractor.readFile(SolutionGUI.fileName);
         DataExtractor.extractPoints(content);
         DataExtractor.normalizePoints();
-        SolutionGUI.drawingPanel.setRoute(null);
         SolutionGUI.drawingPanel.setPoints(DataExtractor.normalizedPoints);
         SolutionGUI.limit = 2;
         SolutionGUI.computed = false;
@@ -44,12 +43,10 @@ public class ButtonActionListener {
         if(SolutionGUI.fileName==null){
             JOptionPane.showMessageDialog(null, "Open a file before running the solution.",
                     INFO_TITLE, JOptionPane.INFORMATION_MESSAGE);
-        } else if(validStartingPoint()){
-            int start = Integer.parseInt(SolutionGUI.startingPoint.getText());
-            if(start!=SolutionGUI.start || !SolutionGUI.computed){
-                int[] route = TSPSolution.runTSP(DataExtractor.points, start);
-                SolutionGUI.start = start;
-                SolutionGUI.drawingPanel.setRoute(route);
+        } else {
+            if(!SolutionGUI.computed){
+                int n = Math.min(DataExtractor.points.length / 10, 30);
+                TSPSolution.attachThread(n);
                 SolutionGUI.limit = 2;
                 SolutionGUI.computed = true;
             }
@@ -58,29 +55,13 @@ public class ButtonActionListener {
         }
     }
 
-    public static boolean validStartingPoint(){
-        int start = 1;
-        try {
-            start = Integer.parseInt(SolutionGUI.startingPoint.getText());
-        } catch (NumberFormatException e){
-            JOptionPane.showMessageDialog(null, "Enter a valid number as Starting point.",
-                    INFO_TITLE, JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        if(start<1 || start>DataExtractor.points.length){
-            JOptionPane.showMessageDialog(null,
-                    "Enter a valid number from 1-"+DataExtractor.points.length+" as Starting point.",
-                    INFO_TITLE, JOptionPane.INFORMATION_MESSAGE);
-            return false;
-        }
-        return true;
-    }
-
     public static void drawLines() {
         while(SolutionGUI.limit<=DataExtractor.points.length+1) {
             SolutionGUI.drawingPanel.setLimit(SolutionGUI.limit);
-            SolutionGUI.distance.setText(""+TSPSolution.cost[SolutionGUI.limit-1]);
-            SolutionGUI.iteration.setText(""+(SolutionGUI.limit-1));
+            int[] min = TSPSolution.getMinThreeCost(SolutionGUI.limit);
+            SolutionGUI.drawingPanel.syncRoute1 = TSPSolution.routeList.get(min[0]);
+            SolutionGUI.drawingPanel.syncRoute2 = TSPSolution.routeList.get(min[1]);
+            SolutionGUI.drawingPanel.syncRoute3 = TSPSolution.routeList.get(min[2]);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
