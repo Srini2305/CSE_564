@@ -19,8 +19,8 @@ public class ButtonActionListener {
         SolutionGUI.stopMenuItem.addActionListener(e -> { SolutionGUI.thread.stop(); });
     }
     public static void aboutActionPerformed() {
-        SolutionGUI.aboutMenu.addActionListener(e -> JOptionPane.showMessageDialog(null,
-                "Ashwin Srinivasan\n Chandan Yadav\n Srinivasan Sundar",
+        SolutionGUI.aboutMenuItem.addActionListener(e -> JOptionPane.showMessageDialog(null,
+                "Ashwin Srinivasan\nChandan Yadav\nSrinivasan Sundar",
                 INFO_TITLE, JOptionPane.INFORMATION_MESSAGE));
     }
 
