@@ -2,13 +2,15 @@ import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
-public class ButtonActionListener {
+public class MenuActionListener {
 
     private static final String INFO_TITLE = "Information";
-    private DataExtractor dataExtractor;
+    private final DataExtractor dataExtractor;
+    private int fileLength = 0;
 
-    ButtonActionListener(){
+    MenuActionListener(){
         dataExtractor = new DataExtractor();
         dataExtractor.addObserver(SolutionGUI.drawingPanel);
     }
@@ -49,12 +51,13 @@ public class ButtonActionListener {
             File selectedFile = fileChooser.getSelectedFile();
             SolutionGUI.fileName = selectedFile.getPath();
         }
-        String content = dataExtractor.readFile(SolutionGUI.fileName);
+        String content = readFile(SolutionGUI.fileName);
+        dataExtractor.setFileLength(this.getFileLength());
         dataExtractor.extractPoints(content);
         dataExtractor.normalizePoints();
         SolutionGUI.drawingPanel.setPoints(dataExtractor.getNormalizedPoints());
-        SolutionGUI.limit = 2;
-        SolutionGUI.computed = false;
+        SolutionGUI.setLimit(2);
+        SolutionGUI.setComputed(false);
     }
 
     private void onRun() {
@@ -65,10 +68,10 @@ public class ButtonActionListener {
             if(!SolutionGUI.computed){
                 int n = Math.min(dataExtractor.getPoints().length / 10, 30);
                 dataExtractor.attachThread(n);
-                SolutionGUI.limit = 2;
-                SolutionGUI.computed = true;
+                SolutionGUI.setLimit(2);
+                SolutionGUI.setComputed(true);
             }
-            SolutionGUI.thread = new Thread(this::drawLines);
+            SolutionGUI.setThread(new Thread(this::drawLines));
             SolutionGUI.thread.start();
         }
     }
@@ -102,21 +105,41 @@ public class ButtonActionListener {
         SolutionGUI.drawingPanel.setSyncRoute1(Collections.synchronizedCollection(new ArrayList<>()));
         SolutionGUI.drawingPanel.setSyncRoute2(Collections.synchronizedCollection(new ArrayList<>()));
         SolutionGUI.drawingPanel.setSyncRoute3(Collections.synchronizedCollection(new ArrayList<>()));
-        for(Thread thread : dataExtractor.threadList)
+        for(Thread thread : dataExtractor.getThreadList())
             thread.stop();
-        dataExtractor.threadList = new ArrayList<>();
-        dataExtractor.routeList = new ArrayList<>();
-        dataExtractor.costList = new ArrayList<>();
+        dataExtractor.setThreadList(new ArrayList<>());
+        dataExtractor.setRouteList(new ArrayList<>());
+        dataExtractor.setCostList(new ArrayList<>());
+    }
+
+    public String readFile(String fileName){
+        File file = new File(fileName);
+        StringBuilder stringBuilder = new StringBuilder();
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if(line.trim().toUpperCase().startsWith("DIMENSION")){
+                    String[] str = line.trim().split("\\s+");
+                    setFileLength(Integer.parseInt(str[str.length-1]));
+                }
+                if (Character.isDigit(line.trim().charAt(0))) {
+                    stringBuilder.append(line).append(" ");
+                }
+            }
+        } catch (FileNotFoundException e){
+            System.out.println("File not found!");
+        }
+        return stringBuilder.toString();
     }
 
     public void drawLines() {
         while(SolutionGUI.limit<=dataExtractor.getPoints().length+1) {
             SolutionGUI.drawingPanel.setLimit(SolutionGUI.limit);
             int[] min = dataExtractor.getMinThreeCost(SolutionGUI.limit);
-            if(!dataExtractor.routeList.isEmpty()) {
-                SolutionGUI.drawingPanel.syncRoute1 = dataExtractor.routeList.get(min[0]);
-                SolutionGUI.drawingPanel.syncRoute2 = dataExtractor.routeList.get(min[1]);
-                SolutionGUI.drawingPanel.syncRoute3 = dataExtractor.routeList.get(min[2]);
+            if(!dataExtractor.getRouteList().isEmpty()) {
+                SolutionGUI.drawingPanel.setSyncRoute1(dataExtractor.getRouteList().get(min[0]));
+                SolutionGUI.drawingPanel.setSyncRoute2(dataExtractor.getRouteList().get(min[1]));
+                SolutionGUI.drawingPanel.setSyncRoute3(dataExtractor.getRouteList().get(min[2]));
             }
             try {
                 Thread.sleep(1000);
@@ -124,9 +147,17 @@ public class ButtonActionListener {
                 System.out.println(e.getLocalizedMessage());
                 Thread.currentThread().interrupt();
             }
-            SolutionGUI.limit++;
+            SolutionGUI.setLimit(SolutionGUI.getLimit()+1);
         }
-        SolutionGUI.limit = 1;
+        SolutionGUI.setLimit(1);
+    }
+
+    public int getFileLength() {
+        return this.fileLength;
+    }
+
+    public void setFileLength(int fileLength) {
+        this.fileLength = fileLength;
     }
 
 }

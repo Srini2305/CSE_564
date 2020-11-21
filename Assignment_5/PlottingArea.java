@@ -5,9 +5,9 @@ import java.util.*;
 public class PlottingArea extends JPanel implements Observer {
 
     private int[][] points;
-    Collection<Integer> syncRoute1 = Collections.synchronizedCollection(new ArrayList<>());
-    Collection<Integer> syncRoute2 = Collections.synchronizedCollection(new ArrayList<>());
-    Collection<Integer> syncRoute3 = Collections.synchronizedCollection(new ArrayList<>());
+    private Collection<Integer> syncRoute1 = Collections.synchronizedCollection(new ArrayList<>());
+    private Collection<Integer> syncRoute2 = Collections.synchronizedCollection(new ArrayList<>());
+    private Collection<Integer> syncRoute3 = Collections.synchronizedCollection(new ArrayList<>());
     private int limit = 2;
 
     PlottingArea(){
@@ -46,7 +46,6 @@ public class PlottingArea extends JPanel implements Observer {
 
     public void setPoints(int[][] points) {
         this.points = points;
-        //repaint();
     }
 
     public void setLimit(int limit) {

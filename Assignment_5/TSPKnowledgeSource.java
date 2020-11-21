@@ -1,6 +1,18 @@
 import java.util.List;
 
-public class TSPSolution {
+public class TSPKnowledgeSource implements Runnable {
+
+    int[][] points;
+    int start;
+    List<Integer> routeList;
+    List<Integer> cost;
+
+    TSPKnowledgeSource(int[][] points, int start, List<Integer> routeList, List<Integer> cost){
+        this.points = points;
+        this.start = start;
+        this.routeList = routeList;
+        this.cost = cost;
+    }
 
     public int[] nearestNeighbor(int[][] pt, int start, boolean[] visited){
         int cost = Integer.MAX_VALUE;
@@ -18,7 +30,7 @@ public class TSPSolution {
         return new int[]{neighbor, cost};
     }
 
-    public void runTSP(int[][] points, int start, List<Integer> routeList, List<Integer> cost) {
+    public void runTSP() {
         int len = points.length;
         int[] route = new int[len+1];
         boolean[] visited = new boolean[len];
@@ -42,4 +54,8 @@ public class TSPSolution {
         return (int) Math.round(Math.sqrt(Math.pow((x1-x2),2) + Math.pow((y1-y2),2)));
     }
 
+    @Override
+    public void run() {
+        runTSP();
+    }
 }

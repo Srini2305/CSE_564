@@ -4,34 +4,12 @@ import java.util.*;
 
 public class DataExtractor extends Observable {
 
-    private final TSPSolution tspSolution= new TSPSolution();
-    
     private int[][] points;
     private int[][] normalizedPoints;
     private int fileLength = 0;
-    public List<Thread> threadList = new ArrayList<>();
-    public List<List<Integer>> routeList = new ArrayList<>();
-    public List<List<Integer>> costList = new ArrayList<>();
-
-    public String readFile(String fileName){
-        File file = new File(fileName);
-        StringBuilder stringBuilder = new StringBuilder();
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if(line.trim().toUpperCase().startsWith("DIMENSION")){
-                    String[] str = line.trim().split("\\s+");
-                    setFileLength(Integer.parseInt(str[str.length-1]));
-                }
-                if (Character.isDigit(line.trim().charAt(0))) {
-                    stringBuilder.append(line).append(" ");
-                }
-            }
-        } catch (FileNotFoundException e){
-            System.out.println("File not found!");
-        }
-        return stringBuilder.toString();
-    }
+    private List<Thread> threadList = new ArrayList<>();
+    private List<List<Integer>> routeList = new ArrayList<>();
+    private List<List<Integer>> costList = new ArrayList<>();
 
     public void extractPoints(String content){
         int[][] points = new int[getFileLength()][2];
@@ -85,7 +63,8 @@ public class DataExtractor extends Observable {
             int s = 1+(i*(normalizedPoints.length/n));
             List<Integer> route = new ArrayList<>();
             List<Integer> cost = new ArrayList<>();
-            Thread thread = new Thread(() -> tspSolution.runTSP(normalizedPoints, s, route, cost));
+            TSPKnowledgeSource tspKnowledgeSource = new TSPKnowledgeSource(normalizedPoints, s, route, cost);
+            Thread thread = new Thread(tspKnowledgeSource);
             threadList.add(thread);
             routeList.add(route);
             costList.add(cost);
@@ -134,5 +113,29 @@ public class DataExtractor extends Observable {
 
     public void setFileLength(int fileLength) {
         this.fileLength = fileLength;
+    }
+
+    public List<Thread> getThreadList() {
+        return threadList;
+    }
+
+    public void setThreadList(List<Thread> threadList) {
+        this.threadList = threadList;
+    }
+
+    public List<List<Integer>> getRouteList() {
+        return routeList;
+    }
+
+    public void setRouteList(List<List<Integer>> routeList) {
+        this.routeList = routeList;
+    }
+
+    public List<List<Integer>> getCostList() {
+        return costList;
+    }
+
+    public void setCostList(List<List<Integer>> costList) {
+        this.costList = costList;
     }
 }

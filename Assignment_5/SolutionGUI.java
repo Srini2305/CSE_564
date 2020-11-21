@@ -1,9 +1,8 @@
 import javax.swing.*;
-import java.awt.*;
 
 public class SolutionGUI extends JFrame {
 
-    private ButtonActionListener buttonActionListener = new ButtonActionListener();
+    private MenuActionListener menuActionListener = new MenuActionListener();
     static JMenuItem runMenuItem = new JMenuItem("Run");
     static JMenuItem openMenuItem = new JMenuItem("Open");
     static JMenuItem stopMenuItem = new JMenuItem("Stop");
@@ -47,12 +46,43 @@ public class SolutionGUI extends JFrame {
     }
 
     private void addButtonActionListener() {
-        buttonActionListener.openActionPerformed();
-        buttonActionListener.runActionPerformed();
-        buttonActionListener.newActionPerformed();
-        buttonActionListener.saveActionPerformed();
-        buttonActionListener.stopActionPerformed();
-        buttonActionListener.aboutActionPerformed();
+        menuActionListener.openActionPerformed();
+        menuActionListener.runActionPerformed();
+        menuActionListener.newActionPerformed();
+        menuActionListener.saveActionPerformed();
+        menuActionListener.stopActionPerformed();
+        menuActionListener.aboutActionPerformed();
     }
 
+    public static String getFileName() {
+        return fileName;
+    }
+
+    public static void setFileName(String fileName) {
+        SolutionGUI.fileName = fileName;
+    }
+
+    public static Thread getThread() {
+        return thread;
+    }
+
+    public static void setThread(Thread thread) {
+        SolutionGUI.thread = thread;
+    }
+
+    public static boolean isComputed() {
+        return computed;
+    }
+
+    public static void setComputed(boolean computed) {
+        SolutionGUI.computed = computed;
+    }
+
+    public static int getLimit() {
+        return limit;
+    }
+
+    public static void setLimit(int limit) {
+        SolutionGUI.limit = limit;
+    }
 }
