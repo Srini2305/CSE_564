@@ -1,15 +1,34 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.*;
 
 public class DataExtractor extends Observable {
-
+    
     private int[][] points;
     private int[][] normalizedPoints;
     private int fileLength = 0;
     private List<Thread> threadList = new ArrayList<>();
     private List<List<Integer>> routeList = new ArrayList<>();
     private List<List<Integer>> costList = new ArrayList<>();
+
+    public String readFile(String fileName){
+        File file = new File(fileName);
+        StringBuilder stringBuilder = new StringBuilder();
+        try (Scanner scanner = new Scanner(file)) {
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if(line.trim().toUpperCase().startsWith("DIMENSION")){
+                    String[] str = line.trim().split("\\s+");
+                    setFileLength(Integer.parseInt(str[str.length-1]));
+                }
+                if (Character.isDigit(line.trim().charAt(0))) {
+                    stringBuilder.append(line).append(" ");
+                }
+            }
+        } catch (FileNotFoundException e){
+            System.out.println("File not found!");
+        }
+        return stringBuilder.toString();
+    }
 
     public void extractPoints(String content){
         int[][] points = new int[getFileLength()][2];
@@ -89,6 +108,23 @@ public class DataExtractor extends Observable {
             min = Integer.MAX_VALUE;
         }
         return res;
+    }
+
+    public void saveFile(String fileName){
+        try {
+            FileOutputStream newFile = new FileOutputStream(fileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(newFile));
+            int number = 1;
+            for(int i = 0;i< normalizedPoints.length;i++){
+                bufferedWriter.write(number + " " + normalizedPoints[i][0]+ " "+
+                        normalizedPoints[i][1]);
+                number++;
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public int[][] getPoints() {

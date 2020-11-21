@@ -8,7 +8,6 @@ public class MenuActionListener {
 
     private static final String INFO_TITLE = "Information";
     private final DataExtractor dataExtractor;
-    private int fileLength = 0;
 
     MenuActionListener(){
         dataExtractor = new DataExtractor();
@@ -49,10 +48,9 @@ public class MenuActionListener {
         int returnValue = fileChooser.showOpenDialog(null);
         if (returnValue == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-            SolutionGUI.fileName = selectedFile.getPath();
+            SolutionGUI.setFileName(selectedFile.getPath());
         }
-        String content = readFile(SolutionGUI.fileName);
-        dataExtractor.setFileLength(this.getFileLength());
+        String content = dataExtractor.readFile(SolutionGUI.fileName);
         dataExtractor.extractPoints(content);
         dataExtractor.normalizePoints();
         SolutionGUI.drawingPanel.setPoints(dataExtractor.getNormalizedPoints());
@@ -81,21 +79,9 @@ public class MenuActionListener {
         fs.setDialogTitle("Save a File");
         int result = fs.showSaveDialog(null);
         if(result == JFileChooser.APPROVE_OPTION){
-            try {
                 File fi = fs.getSelectedFile();
-                FileOutputStream newFile = new FileOutputStream(fi.getPath());
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(newFile));
-                int number = 1;
-                for(int i = 0;i<dataExtractor.getPoints().length;i++){
-                    bufferedWriter.write(number + " " + dataExtractor.getNormalizedPoints()[i][0]+ " "+
-                            dataExtractor.getNormalizedPoints()[i][1]);
-                    number++;
-                    bufferedWriter.newLine();
-                }
-                bufferedWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                String fileName = fi.getPath();
+                dataExtractor.saveFile(fileName);
         }
     }
 
@@ -110,26 +96,6 @@ public class MenuActionListener {
         dataExtractor.setThreadList(new ArrayList<>());
         dataExtractor.setRouteList(new ArrayList<>());
         dataExtractor.setCostList(new ArrayList<>());
-    }
-
-    public String readFile(String fileName){
-        File file = new File(fileName);
-        StringBuilder stringBuilder = new StringBuilder();
-        try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                if(line.trim().toUpperCase().startsWith("DIMENSION")){
-                    String[] str = line.trim().split("\\s+");
-                    setFileLength(Integer.parseInt(str[str.length-1]));
-                }
-                if (Character.isDigit(line.trim().charAt(0))) {
-                    stringBuilder.append(line).append(" ");
-                }
-            }
-        } catch (FileNotFoundException e){
-            System.out.println("File not found!");
-        }
-        return stringBuilder.toString();
     }
 
     public void drawLines() {
@@ -150,14 +116,6 @@ public class MenuActionListener {
             SolutionGUI.setLimit(SolutionGUI.getLimit()+1);
         }
         SolutionGUI.setLimit(1);
-    }
-
-    public int getFileLength() {
-        return this.fileLength;
-    }
-
-    public void setFileLength(int fileLength) {
-        this.fileLength = fileLength;
     }
 
 }
