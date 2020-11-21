@@ -1,14 +1,17 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Observable;
-import java.util.Scanner;
+import java.util.*;
 
 public class DataExtractor extends Observable {
+
+    private final TSPSolution tspSolution= new TSPSolution();
     
     private int[][] points;
     private int[][] normalizedPoints;
     private int fileLength = 0;
+    public List<Thread> threadList = new ArrayList<>();
+    public List<List<Integer>> routeList = new ArrayList<>();
+    public List<List<Integer>> costList = new ArrayList<>();
 
     public String readFile(String fileName){
         File file = new File(fileName);
@@ -75,6 +78,38 @@ public class DataExtractor extends Observable {
         normalizedPoints = pts;
         setChanged();
         notifyObservers();
+    }
+
+    public void attachThread(int n){
+        for(int i=0;i<n;i++){
+            int s = 1+(i*(normalizedPoints.length/n));
+            List<Integer> route = new ArrayList<>();
+            List<Integer> cost = new ArrayList<>();
+            Thread thread = new Thread(() -> tspSolution.runTSP(normalizedPoints, s, route, cost));
+            threadList.add(thread);
+            routeList.add(route);
+            costList.add(cost);
+            thread.start();
+        }
+    }
+
+    public int[] getMinThreeCost(int n){
+        int firstMin = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        int minIndex = 0;
+        int[] res = new int[] {0,1,2};
+        for(int k=0;k<3;k++) {
+            for (int i = 0; i < costList.size(); i++) {
+                if (costList.get(i).get(n-1) > firstMin && costList.get(i).get(n-1) < min) {
+                    min = costList.get(i).get(n-1);
+                    minIndex = i;
+                }
+            }
+            res[k] = minIndex;
+            firstMin = min;
+            min = Integer.MAX_VALUE;
+        }
+        return res;
     }
 
     public int[][] getPoints() {

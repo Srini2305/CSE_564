@@ -64,16 +64,11 @@ public class ButtonActionListener {
         } else {
             if(!SolutionGUI.computed){
                 int n = Math.min(dataExtractor.getPoints().length / 10, 30);
-                TSPSolution.attachThread(n, dataExtractor.getPoints());
+                dataExtractor.attachThread(n);
                 SolutionGUI.limit = 2;
                 SolutionGUI.computed = true;
             }
-            SolutionGUI.thread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    drawLines();
-                }
-            });
+            SolutionGUI.thread = new Thread(this::drawLines);
             SolutionGUI.thread.start();
         }
     }
@@ -107,21 +102,21 @@ public class ButtonActionListener {
         SolutionGUI.drawingPanel.setSyncRoute1(Collections.synchronizedCollection(new ArrayList<>()));
         SolutionGUI.drawingPanel.setSyncRoute2(Collections.synchronizedCollection(new ArrayList<>()));
         SolutionGUI.drawingPanel.setSyncRoute3(Collections.synchronizedCollection(new ArrayList<>()));
-        for(Thread thread : TSPSolution.threadList)
+        for(Thread thread : dataExtractor.threadList)
             thread.stop();
-        TSPSolution.threadList = new ArrayList<>();
-        TSPSolution.routeList = new ArrayList<>();
-        TSPSolution.costList = new ArrayList<>();
+        dataExtractor.threadList = new ArrayList<>();
+        dataExtractor.routeList = new ArrayList<>();
+        dataExtractor.costList = new ArrayList<>();
     }
 
     public void drawLines() {
         while(SolutionGUI.limit<=dataExtractor.getPoints().length+1) {
             SolutionGUI.drawingPanel.setLimit(SolutionGUI.limit);
-            int[] min = TSPSolution.getMinThreeCost(SolutionGUI.limit);
-            if(!TSPSolution.routeList.isEmpty()) {
-                SolutionGUI.drawingPanel.syncRoute1 = TSPSolution.routeList.get(min[0]);
-                SolutionGUI.drawingPanel.syncRoute2 = TSPSolution.routeList.get(min[1]);
-                SolutionGUI.drawingPanel.syncRoute3 = TSPSolution.routeList.get(min[2]);
+            int[] min = dataExtractor.getMinThreeCost(SolutionGUI.limit);
+            if(!dataExtractor.routeList.isEmpty()) {
+                SolutionGUI.drawingPanel.syncRoute1 = dataExtractor.routeList.get(min[0]);
+                SolutionGUI.drawingPanel.syncRoute2 = dataExtractor.routeList.get(min[1]);
+                SolutionGUI.drawingPanel.syncRoute3 = dataExtractor.routeList.get(min[2]);
             }
             try {
                 Thread.sleep(1000);
