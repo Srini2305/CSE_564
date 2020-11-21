@@ -1,5 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Scanner;
@@ -75,6 +74,23 @@ public class DataExtractor extends Observable {
         normalizedPoints = pts;
         setChanged();
         notifyObservers();
+    }
+
+    public void saveFile(String fileName){
+        try {
+            FileOutputStream newFile = new FileOutputStream(fileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(newFile));
+            int number = 1;
+            for(int i = 0;i< normalizedPoints.length;i++){
+                bufferedWriter.write(number + " " + normalizedPoints[i][0]+ " "+
+                        normalizedPoints[i][1]);
+                number++;
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public int[][] getPoints() {

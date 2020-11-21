@@ -83,21 +83,9 @@ public class ButtonActionListener {
         fs.setDialogTitle("Save a File");
         int result = fs.showSaveDialog(null);
         if(result == JFileChooser.APPROVE_OPTION){
-            try {
                 File fi = fs.getSelectedFile();
-                FileOutputStream newFile = new FileOutputStream(fi.getPath());
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(newFile));
-                int number = 1;
-                for(int i = 0;i<dataExtractor.getPoints().length;i++){
-                    bufferedWriter.write(number + " " + dataExtractor.getNormalizedPoints()[i][0]+ " "+
-                            dataExtractor.getNormalizedPoints()[i][1]);
-                    number++;
-                    bufferedWriter.newLine();
-                }
-                bufferedWriter.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                String fileName = fi.getPath();
+                dataExtractor.saveFile(fileName);
         }
     }
 
