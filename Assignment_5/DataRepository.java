@@ -1,14 +1,23 @@
 import java.io.*;
 import java.util.*;
 
-public class DataExtractor extends Observable {
-    
-    private int[][] points;
-    private int[][] normalizedPoints;
+public class DataRepository extends Observable {
+
+    private  static DataRepository dataRepository;
+    private int[][] points = new int[0][2];
+    private int[][] normalizedPoints = new int[0][2];
     private int fileLength = 0;
+    private Thread controlThread;
     private List<Thread> threadList = new ArrayList<>();
     private List<List<Integer>> routeList = new ArrayList<>();
     private List<List<Integer>> costList = new ArrayList<>();
+
+    public static DataRepository getInstance(){
+        if(dataRepository== null){
+            dataRepository = new DataRepository();
+        }
+        return dataRepository;
+    }
 
     public String readFile(String fileName){
         File file = new File(fileName);
@@ -28,6 +37,23 @@ public class DataExtractor extends Observable {
             System.out.println("File not found!");
         }
         return stringBuilder.toString();
+    }
+
+    public void saveFile(String fileName){
+        try {
+            FileOutputStream newFile = new FileOutputStream(fileName);
+            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(newFile));
+            int number = 1;
+            for(int i = 0;i< normalizedPoints.length;i++){
+                bufferedWriter.write(number + " " + normalizedPoints[i][0]+ " "+
+                        normalizedPoints[i][1]);
+                number++;
+                bufferedWriter.newLine();
+            }
+            bufferedWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void extractPoints(String content){
@@ -72,9 +98,7 @@ public class DataExtractor extends Observable {
             pts[i][1] = points[i][1] - (minY - 50);
             pts[i][1] = (pts[i][1]*750)/rangeY;
         }
-        normalizedPoints = pts;
-        setChanged();
-        notifyObservers();
+        setNormalizedPoints(pts);
     }
 
     public void attachThread(int n){
@@ -91,40 +115,14 @@ public class DataExtractor extends Observable {
         }
     }
 
-    public int[] getMinThreeCost(int n){
-        int firstMin = Integer.MIN_VALUE;
-        int min = Integer.MAX_VALUE;
-        int minIndex = 0;
-        int[] res = new int[] {0,1,2};
-        for(int k=0;k<3;k++) {
-            for (int i = 0; i < costList.size(); i++) {
-                if (costList.get(i).get(n-1) > firstMin && costList.get(i).get(n-1) < min) {
-                    min = costList.get(i).get(n-1);
-                    minIndex = i;
-                }
-            }
-            res[k] = minIndex;
-            firstMin = min;
-            min = Integer.MAX_VALUE;
-        }
-        return res;
+    public void attachControlThread(){
+        controlThread = new Thread(new Control());
+        controlThread.start();
     }
 
-    public void saveFile(String fileName){
-        try {
-            FileOutputStream newFile = new FileOutputStream(fileName);
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(newFile));
-            int number = 1;
-            for(int i = 0;i< normalizedPoints.length;i++){
-                bufferedWriter.write(number + " " + normalizedPoints[i][0]+ " "+
-                        normalizedPoints[i][1]);
-                number++;
-                bufferedWriter.newLine();
-            }
-            bufferedWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void notifyDrawLines(){
+        setChanged();
+        notifyObservers();
     }
 
     public int[][] getPoints() {
@@ -141,6 +139,8 @@ public class DataExtractor extends Observable {
 
     public void setNormalizedPoints(int[][] normalizedPoints) {
         this.normalizedPoints = normalizedPoints;
+        setChanged();
+        notifyObservers();
     }
 
     public int getFileLength() {
@@ -173,5 +173,9 @@ public class DataExtractor extends Observable {
 
     public void setCostList(List<List<Integer>> costList) {
         this.costList = costList;
+    }
+
+    public Thread getControlThread() {
+        return controlThread;
     }
 }

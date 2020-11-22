@@ -5,13 +5,13 @@ public class TSPKnowledgeSource implements Runnable {
     int[][] points;
     int start;
     List<Integer> routeList;
-    List<Integer> cost;
+    List<Integer> costList;
 
-    TSPKnowledgeSource(int[][] points, int start, List<Integer> routeList, List<Integer> cost){
+    TSPKnowledgeSource(int[][] points, int start, List<Integer> routeList, List<Integer> costList){
         this.points = points;
         this.start = start;
         this.routeList = routeList;
-        this.cost = cost;
+        this.costList = costList;
     }
 
     public int[] nearestNeighbor(int[][] pt, int start, boolean[] visited){
@@ -34,7 +34,7 @@ public class TSPKnowledgeSource implements Runnable {
         int len = points.length;
         int[] route = new int[len+1];
         boolean[] visited = new boolean[len];
-        cost.add(0);
+        costList.add(0);
         route[0] = start;
         routeList.add(start);
         visited[start-1] = true;
@@ -42,11 +42,11 @@ public class TSPKnowledgeSource implements Runnable {
             int[] neighbor = nearestNeighbor(points, route[i-1]-1, visited);
             route[i] = neighbor[0] + 1;
             routeList.add(neighbor[0]+1);
-            cost.add(cost.get(i-1)+ neighbor[1]);
+            costList.add(costList.get(i-1)+ neighbor[1]);
         }
         route[len] = start;
         routeList.add(start);
-        cost.add(cost.get(len-1)+ euclideanDistance(points[start-1][0],points[start-1][1],
+        costList.add(costList.get(len-1)+ euclideanDistance(points[start-1][0],points[start-1][1],
                 points[route[len-1]][0],points[route[len-1]][1]));
     }
 

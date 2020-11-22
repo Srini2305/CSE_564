@@ -50,7 +50,6 @@ public class PlottingArea extends JPanel implements Observer {
 
     public void setLimit(int limit) {
         this.limit = limit;
-        repaint();
     }
 
     public Collection<Integer> getSyncRoute1() {
