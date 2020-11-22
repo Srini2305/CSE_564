@@ -34,6 +34,9 @@ public class MenuActionListener {
     public void onRun() {
         if(!SolutionView.isComputed()){
             int n = Math.min(DataRepository.getInstance().getNormalizedPoints().length / 10, 30);
+            if(DataRepository.getInstance().getNormalizedPoints().length<30){
+                n = 3;
+            }
             DataRepository.getInstance().attachThread(n);
             SolutionView.setLimit(2);
             SolutionView.setComputed(true);

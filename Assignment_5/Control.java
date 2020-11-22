@@ -12,12 +12,12 @@ public class Control implements Runnable {
         PlottingArea plottingArea = SolutionView.getDrawingPanel();
         while(SolutionView.getLimit()<= DataRepository.getInstance().getNormalizedPoints().length+1) {
             plottingArea.setLimit(SolutionView.getLimit());
-            Control.selectRoute();
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
+            Control.selectRoute();
             DataRepository.getInstance().notifyDrawLines();
             SolutionView.setLimit(SolutionView.getLimit()+1);
         }
@@ -42,7 +42,7 @@ public class Control implements Runnable {
         for(int k=0;k<3;k++) {
             List<List<Integer>> costList = DataRepository.getInstance().getCostList();
             for (int i = 0; i < costList.size(); i++) {
-                if (costList.get(i).get(n-1) > firstMin && costList.get(i).get(n-1) < min) {
+                if (costList.get(i).size()>n-1 && costList.get(i).get(n-1) > firstMin && costList.get(i).get(n-1) < min) {
                     min = costList.get(i).get(n-1);
                     minIndex = i;
                 }

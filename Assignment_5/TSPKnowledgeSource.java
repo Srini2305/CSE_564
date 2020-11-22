@@ -52,8 +52,6 @@ public class TSPKnowledgeSource implements Runnable {
         }
         route[len] = start;
         routeList.add(start);
-        costList.add(costList.get(len-1)+ euclideanDistance(points[start-1][0],points[start-1][1],
-                points[route[len-1]][0],points[route[len-1]][1]));
     }
 
     public int euclideanDistance(float x1, float y1, float x2, float y2){
