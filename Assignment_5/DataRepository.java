@@ -7,7 +7,6 @@ import java.util.*;
  * @author Ashwin Srinivasan, Srinivasan Sundar, Chandan Yadav
  * @version 1.0
  */
-
 public class DataRepository extends Observable {
 
     private  static DataRepository dataRepository;
@@ -130,10 +129,6 @@ public class DataRepository extends Observable {
     public void notifyDrawLines(){
         setChanged();
         notifyObservers();
-    }
-
-    public int[][] getPoints() {
-        return points;
     }
 
     public void setPoints(int[][] points) {

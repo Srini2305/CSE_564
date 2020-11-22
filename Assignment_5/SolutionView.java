@@ -5,10 +5,8 @@ import javax.swing.*;
  * @author Ashwin Srinivasan, Chandan Yadav
  * @version 1.0
  */
-
 public class SolutionView extends JFrame {
 
-    private final MenuActionListener menuActionListener;
     private final JMenuItem runMenuItem;
     private final JMenuItem openMenuItem;
     private final JMenuItem stopMenuItem;
@@ -29,7 +27,6 @@ public class SolutionView extends JFrame {
         saveMenuItem = new JMenuItem("Save");
         newMenuItem = new JMenuItem("New");
         addPanels();
-        this.menuActionListener = new MenuActionListener();
         addButtonActionListener();
         setExtendedState(getExtendedState() | MAXIMIZED_BOTH);
     }
@@ -59,6 +56,7 @@ public class SolutionView extends JFrame {
     }
 
     private void addButtonActionListener() {
+        MenuActionListener menuActionListener = new MenuActionListener();
         openMenuItem.addActionListener(e -> menuActionListener.onOpen());
         saveMenuItem.addActionListener(e -> menuActionListener.onSave());
         newMenuItem.addActionListener(e -> menuActionListener.onNew());
@@ -74,14 +72,6 @@ public class SolutionView extends JFrame {
 
     public static void setFileName(String fileName) {
         SolutionView.fileName = fileName;
-    }
-
-    public static Thread getThread() {
-        return SolutionView.thread;
-    }
-
-    public static void setThread(Thread thread) {
-        SolutionView.thread = thread;
     }
 
     public static boolean isComputed() {

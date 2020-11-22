@@ -7,7 +7,6 @@ import java.util.*;
  * @author Ashwin Srinivasan, Srinivasan Sundar, Chandan Yadav
  * @version 1.0
  */
-
 public class PlottingArea extends JPanel implements Observer {
 
     private int[][] points;
@@ -58,24 +57,12 @@ public class PlottingArea extends JPanel implements Observer {
         this.limit = limit;
     }
 
-    public Collection<Integer> getSyncRoute1() {
-        return syncRoute1;
-    }
-
     public void setSyncRoute1(Collection<Integer> syncRoute1) {
         this.syncRoute1 = syncRoute1;
     }
 
-    public Collection<Integer> getSyncRoute2() {
-        return syncRoute2;
-    }
-
     public void setSyncRoute2(Collection<Integer> syncRoute2) {
         this.syncRoute2 = syncRoute2;
-    }
-
-    public Collection<Integer> getSyncRoute3() {
-        return syncRoute3;
     }
 
     public void setSyncRoute3(Collection<Integer> syncRoute3) {

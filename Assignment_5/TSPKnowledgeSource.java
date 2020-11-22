@@ -6,7 +6,6 @@ import java.util.List;
  * @author Ashwin Srinivasan, Srinivasan Sundar, Chandan Yadav
  * @version 1.0
  */
-
 public class TSPKnowledgeSource implements Runnable {
 
     int[][] points;

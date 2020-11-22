@@ -6,7 +6,6 @@ import java.util.List;
  * @author Srinivasan Sundar, Chandan Yadav
  * @version 1.0
  */
-
 public class Control implements Runnable {
 
     public void drawLines() {

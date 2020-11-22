@@ -8,15 +8,12 @@ import java.util.Collections;
  * @author Ashwin Srinivasan, Srinivasan Sundar
  * @version 1.0
  */
-
 public class MenuActionListener {
 
     private static final String INFO_TITLE = "Team Information";
-    private final DataRepository dataRepository;
 
     MenuActionListener(){
-        dataRepository = DataRepository.getInstance();
-        dataRepository.addObserver(SolutionView.getDrawingPanel());
+        DataRepository.getInstance().addObserver(SolutionView.getDrawingPanel());
     }
 
     public void onOpen() {
@@ -26,22 +23,22 @@ public class MenuActionListener {
             File selectedFile = fileChooser.getSelectedFile();
             SolutionView.setFileName(selectedFile.getPath());
         }
-        String content = dataRepository.readFile(SolutionView.getFileName());
-        dataRepository.extractPoints(content);
-        dataRepository.normalizePoints();
-        SolutionView.getDrawingPanel().setPoints(dataRepository.getNormalizedPoints());
+        String content = DataRepository.getInstance().readFile(SolutionView.getFileName());
+        DataRepository.getInstance().extractPoints(content);
+        DataRepository.getInstance().normalizePoints();
+        SolutionView.getDrawingPanel().setPoints(DataRepository.getInstance().getNormalizedPoints());
         SolutionView.setLimit(2);
         SolutionView.setComputed(false);
     }
 
     public void onRun() {
         if(!SolutionView.isComputed()){
-            int n = Math.min(dataRepository.getNormalizedPoints().length / 10, 30);
-            dataRepository.attachThread(n);
+            int n = Math.min(DataRepository.getInstance().getNormalizedPoints().length / 10, 30);
+            DataRepository.getInstance().attachThread(n);
             SolutionView.setLimit(2);
             SolutionView.setComputed(true);
         }
-        dataRepository.attachControlThread();
+        DataRepository.getInstance().attachControlThread();
     }
 
     public void onSave(){
@@ -49,9 +46,9 @@ public class MenuActionListener {
         fs.setDialogTitle("Save a File");
         int result = fs.showSaveDialog(null);
         if(result == JFileChooser.APPROVE_OPTION){
-                File fi = fs.getSelectedFile();
-                String fileName = fi.getPath();
-                dataRepository.saveFile(fileName);
+            File fi = fs.getSelectedFile();
+            String fileName = fi.getPath();
+            DataRepository.getInstance().saveFile(fileName);
         }
     }
 
@@ -62,13 +59,13 @@ public class MenuActionListener {
         plottingArea.setSyncRoute1(Collections.synchronizedCollection(new ArrayList<>()));
         plottingArea.setSyncRoute2(Collections.synchronizedCollection(new ArrayList<>()));
         plottingArea.setSyncRoute3(Collections.synchronizedCollection(new ArrayList<>()));
-        for(Thread thread : dataRepository.getThreadList())
+        for(Thread thread : DataRepository.getInstance().getThreadList())
             thread.stop();
-        dataRepository.setThreadList(new ArrayList<>());
-        dataRepository.setRouteList(new ArrayList<>());
-        dataRepository.setCostList(new ArrayList<>());
-        dataRepository.setNormalizedPoints(new int[0][2]);
-        dataRepository.setPoints(new int[0][2]);
+        DataRepository.getInstance().setThreadList(new ArrayList<>());
+        DataRepository.getInstance().setRouteList(new ArrayList<>());
+        DataRepository.getInstance().setCostList(new ArrayList<>());
+        DataRepository.getInstance().setNormalizedPoints(new int[0][2]);
+        DataRepository.getInstance().setPoints(new int[0][2]);
     }
 
     public void onStop(){
