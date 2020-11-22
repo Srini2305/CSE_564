@@ -1,5 +1,10 @@
 import javax.swing.*;
 
+/**
+ *Main.java - Main class for view creation
+ * @author Srinivasan Sundar
+ * @version 1.0
+ */
 public class Main {
 
     public static void main(String[] args) {

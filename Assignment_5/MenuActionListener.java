@@ -3,6 +3,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * MenuActionListener.java - Class used to invoke action listeners of menu items on mouse click
+ * @author Ashwin Srinivasan, Srinivasan Sundar
+ * @version 1.0
+ */
+
 public class MenuActionListener {
 
     private static final String INFO_TITLE = "Team Information";

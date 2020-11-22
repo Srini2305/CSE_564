@@ -2,6 +2,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 
+/**
+ * PlottingArea.java - Class used for plotting the points in the panel
+ * @author Ashwin Srinivasan, Srinivasan Sundar, Chandan Yadav
+ * @version 1.0
+ */
+
 public class PlottingArea extends JPanel implements Observer {
 
     private int[][] points;

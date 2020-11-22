@@ -1,6 +1,12 @@
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * DrawingAreaMouseListener.java - Class used for plotting points on mouse click.
+ * @author Ashwin Srinivasan, Srinivasan Sundar, Chandan Yadav
+ * @version 1.0
+ */
+
 public class DrawingAreaMouseListener implements MouseListener {
 
     @Override

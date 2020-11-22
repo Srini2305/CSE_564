@@ -1,6 +1,13 @@
 import java.io.*;
 import java.util.*;
 
+/**
+ * DataRepository.java - Class which represents blackboard component in the BlackBoard pattern
+ * used for data storage and data related operations.
+ * @author Ashwin Srinivasan, Srinivasan Sundar, Chandan Yadav
+ * @version 1.0
+ */
+
 public class DataRepository extends Observable {
 
     private  static DataRepository dataRepository;

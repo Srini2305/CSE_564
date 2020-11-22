@@ -1,5 +1,11 @@
 import javax.swing.*;
 
+/**
+ * SolutionView.java - Class for creating Frame and adding panels
+ * @author Ashwin Srinivasan, Chandan Yadav
+ * @version 1.0
+ */
+
 public class SolutionView extends JFrame {
 
     private final MenuActionListener menuActionListener;

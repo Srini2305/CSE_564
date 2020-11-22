@@ -1,5 +1,12 @@
 import java.util.List;
 
+/**
+ * Control.java - Class which represents Control component in the BlackBoard pattern
+ * Class used to calculate the minimum distance amongst three traversal
+ * @author Srinivasan Sundar, Chandan Yadav
+ * @version 1.0
+ */
+
 public class Control implements Runnable {
 
     public void drawLines() {

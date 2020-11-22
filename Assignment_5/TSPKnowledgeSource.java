@@ -1,5 +1,12 @@
 import java.util.List;
 
+/**
+ * TSPKnowledgeSource.java - Class which represents KnowledgeSource component in the BlackBoard pattern
+ * Class for computing the nearest neighbour algorithm
+ * @author Ashwin Srinivasan, Srinivasan Sundar, Chandan Yadav
+ * @version 1.0
+ */
+
 public class TSPKnowledgeSource implements Runnable {
 
     int[][] points;
